@@ -2,6 +2,9 @@ import taichi as ti
 import os
 import numpy as np
 import gc
+import os
+import ctypes
+import numpy as np
 from .xmlParser import MPMXMLData
 from .file_ops import FileOperations
 from config.config import MIN_ETA, MAX_ETA, MIN_N, MAX_N, MIN_SIGMA_Y, MAX_SIGMA_Y, MIN_WIDTH, MAX_WIDTH, MIN_HEIGHT, MAX_HEIGHT
@@ -670,3 +673,64 @@ def T(a):
     x, z = x * c + z * s, z * c - x * s
     u, v = x, y * C + z * S
     return np.array([u, v]).swapaxes(0, 1) + 0.5
+
+def generate_particle_dat_file(agTaichiMPM, output_dir, frame_index=0):
+    """
+    Generates a .dat file containing particle data from an MPM simulation
+    
+    Parameters:
+    agTaichiMPM: MPM simulator object containing particle data
+    output_dir: Directory path for output files
+    frame_index: Frame index used in filename (default: 0)
+    
+    Returns:
+    str: Path to the generated .dat file
+    """
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Construct output file path
+    filename = f'config_{frame_index:02d}.dat'
+    filepath = os.path.join(output_dir, filename)
+    
+    # Remove existing file if present
+    if os.path.exists(filepath):
+        os.remove(filepath)
+    
+    print(f'Generating particle data file: {filepath}')
+    
+    # Get particle count from simulator
+    particle_count = agTaichiMPM.ti_particle_count[None]
+    
+    # Identify valid particles (not inside static boxes)
+    particle_is_inner_of_box = agTaichiMPM.ti_particle_is_inner_of_box.to_numpy()[0:particle_count].astype(np.int32)
+    valid_indices = np.where(particle_is_inner_of_box == 0)[0]
+    valid_count = len(valid_indices)
+    
+    # Open file for binary writing
+    with open(filepath, 'wb') as f:
+        # Write number of valid particles (int32)
+        f.write(ctypes.c_int32(valid_count))
+        
+        # Write particle positions (x,y,z)
+        particle_positions = agTaichiMPM.ti_particle_x.to_numpy()[0:particle_count].astype(np.float32)
+        valid_positions = particle_positions[valid_indices].flatten()
+        valid_positions.tofile(f)
+        
+        # Write particle radii (constant value for all particles)
+        radius_value = agTaichiMPM.py_particle_hl
+        particle_radii = np.full(particle_count, radius_value, dtype=np.float32)
+        valid_radii = particle_radii[valid_indices].flatten()
+        valid_radii.tofile(f)
+        
+        # Write particle velocities (vx, vy, vz)
+        particle_velocities = agTaichiMPM.ti_particle_v.to_numpy()[0:particle_count].astype(np.float32)
+        valid_velocities = particle_velocities[valid_indices].flatten()
+        valid_velocities.tofile(f)
+        
+        # Write particle IDs (all set to 1)
+        particle_ids = np.ones(particle_count, dtype=ctypes.c_int32)
+        valid_ids = particle_ids[valid_indices].flatten()
+        valid_ids.tofile(f)
+    
+    return filepath
