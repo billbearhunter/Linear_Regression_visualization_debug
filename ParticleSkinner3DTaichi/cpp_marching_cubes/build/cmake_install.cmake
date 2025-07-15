@@ -1,4 +1,4 @@
-# Install script for directory: /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes
+# Install script for directory: /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

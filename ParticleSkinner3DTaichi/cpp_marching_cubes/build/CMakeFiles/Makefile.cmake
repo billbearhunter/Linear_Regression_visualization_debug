@@ -7,9 +7,9 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/CMakeLists.txt"
-  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/CMakeSourceFiles.txt"
-  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/CompileDefinitions.h.in"
+  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/CMakeLists.txt"
+  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/CMakeSourceFiles.txt"
+  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/CompileDefinitions.h.in"
   "CMakeFiles/3.28.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeSystem.cmake"
@@ -128,7 +128,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
-  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/CompileDefinitions.h"
+  "/Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/CompileDefinitions.h"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+cd ..
+
 if [ -d "./ParticleSkinner3DTaichi/cpp_marching_cubes/build" ]; then
  rm -rf ./ParticleSkinner3DTaichi/cpp_marching_cubes/build
 fi

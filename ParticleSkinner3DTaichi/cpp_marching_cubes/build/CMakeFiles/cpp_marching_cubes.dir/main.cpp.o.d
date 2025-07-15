@@ -1,5 +1,5 @@
 CMakeFiles/cpp_marching_cubes.dir/main.cpp.o: \
-  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/main.cpp \
+  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/main.cpp \
   /opt/homebrew/include/eigen3/Eigen/Dense \
   /opt/homebrew/include/eigen3/Eigen/Core \
   /opt/homebrew/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
@@ -1173,4 +1173,4 @@ CMakeFiles/cpp_marching_cubes.dir/main.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.h
+  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.h

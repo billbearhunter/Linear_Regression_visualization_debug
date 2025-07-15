@@ -1,5 +1,5 @@
 CMakeFiles/cpp_marching_cubes.dir/MarchingCubes.cpp.o: \
-  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.cpp \
+  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/memory \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__assert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__assertion_handler \
@@ -526,9 +526,9 @@ CMakeFiles/cpp_marching_cubes.dir/MarchingCubes.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/sys/_types/_seek_set.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/_ctermid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/sys/_types/_off_t.h \
-  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.h \
+  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/MarchingCubes.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/cassert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/usr/include/_static_assert.h \
-  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/src/ParticleSkinner3DTaichi/cpp_marching_cubes/LookUpTable.h
+  /Users/cglab/Documents/Github/Linear_Regression_visualization_debug/ParticleSkinner3DTaichi/cpp_marching_cubes/LookUpTable.h
