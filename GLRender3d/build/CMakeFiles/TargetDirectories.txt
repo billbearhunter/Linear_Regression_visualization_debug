@@ -1,0 +1,3 @@
+/Users/cglab/Desktop/Creat_training_data_2/GLRender3d/build/CMakeFiles/GLRender3d.dir
+/Users/cglab/Desktop/Creat_training_data_2/GLRender3d/build/CMakeFiles/edit_cache.dir
+/Users/cglab/Desktop/Creat_training_data_2/GLRender3d/build/CMakeFiles/rebuild_cache.dir
