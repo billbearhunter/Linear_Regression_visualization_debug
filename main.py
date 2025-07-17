@@ -1,42 +1,40 @@
 import os
 import json
 import random
-import torch
 import numpy as np
 import traceback
 import taichi as ti
+import joblib as job
 from datetime import datetime
 from config.config import (
     MIN_ETA, MAX_ETA,
     MIN_N, MAX_N,
     MIN_SIGMA_Y, MAX_SIGMA_Y,
     MIN_WIDTH, MAX_WIDTH,
-    MIN_HEIGHT, MAX_HEIGHT
+    MIN_HEIGHT, MAX_HEIGHT,
+    XML_TEMPLATE_PATH
 )
 
 from simulation.taichi import MPMSimulator
-from simulation.xmlParser import MPMXMLData
-# from rendering.render_utils import generate_objs_and_render
-# from src.utils.visualization import visualize_comparison
-# from src.utils.file_ops import ensure_directory
+from scripts import MPM_Emulator
 
 ti.init(arch=ti.gpu, offline_cache=True, default_fp=ti.f32, default_ip=ti.i32)
+
+sample_dir = "results/samples"
 
 # 1. Load pretrained prediction model
 def load_prediction_model(model_path):
     """Load pretrained flow distance prediction model"""
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     try:
-        model = torch.load(model_path, map_location=device)
-        model.eval()
-        print("Prediction model loaded successfully")
+        model = job.load(model_path)
+        print(f"Model loaded successfully from {model_path}")
         return model
     except Exception as e:
-        print(f"Model loading failed: {str(e)}")
-        raise
+        print(f"Failed to load model from {model_path}: {str(e)}")
+        raise e
 
 # 2. Generate random parameter sets
-def generate_random_parameters(num_samples=5):
+def generate_random_parameters(num_samples=1):
     """Generate random parameter samples within defined valid ranges"""
     params = []
     for _ in range(num_samples):
@@ -55,23 +53,23 @@ def main():
     # Initialize
     print("Starting fluid simulation prediction workflow")
     print("=" * 60)
-    random.seed(42)
-    torch.manual_seed(42)
+    random.seed(66)
     
     # Create results directory with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     results_root = os.path.join("results", f"run_{timestamp}")
     
-    # Load prediction model
+    # # Load prediction model
     print("Loading prediction model...")
     model = load_prediction_model("model/best_model.joblib")
     
     # Generate parameter sets
     print("Generating parameter configurations...")
-    params_list = generate_random_parameters(5)
+    params_list = generate_random_parameters(1)
     
     # Track results
     all_results = {}
+    print("Generated parameter sets:")
     
     for i, params in enumerate(params_list):
         sample_id = f"sample_{i+1}"
@@ -83,33 +81,40 @@ def main():
         
 
         
-        # # Save parameters
-        # with open(os.path.join(sample_dir, "parameters.json"), "w") as file:
-        #     json.dump(params, file, indent=4)
-        
-        # try:
-        #     # Predict flow distances
-        #     input_tensor = torch.tensor([
-        #         params['n'], 
-        #         params['eta'], 
-        #         params['sigma_y'], 
-        #         params['width'], 
-        #         params['height']
-        #     ], dtype=torch.float32).unsqueeze(0)
-            
-        #     with torch.no_grad():
-        #         predicted_flow = model(input_tensor).numpy()[0]
-            
-        #     print(f"Predicted flow distances: {predicted_flow}")
+        # Save parameters and use model to predict flow distance
+        try:
+            # Initialize MPM simulator with parameters
+            # Initialize simulator
+            simulator = MPMSimulator(XML_TEMPLATE_PATH)
+            # Run simulation
+            simulator.configure_geometry(width=params['width'], height=params['height'])
+            displacements = simulator.run_simulation(n=params['n'],
+                                                    eta=params['eta'],
+                                                    sigma_y=params['sigma_y'],
+                                                    output_dir=results_root)
+            print(f"Simulation completed for sample {sample_id}. Displacements: {displacements}")
+            # Predict flow distance using the model
+            prediction = model.predict([[params['n'], params['eta'], params['sigma_y'], 
+                                            params['width'], params['height']]])[0]
+            print(f"Predicted flow distance: {prediction}")
+            flow_distance = prediction.tolist()
+            # Save results
+            result = {
+                'params': params,
+                'predicted_flow_distance': flow_distance,
+                # 'simulation_data': simulator.get_simulation_data()  # Assuming this method exists
+            }
+            all_results[sample_id] = result
+            result_file = os.path.join(results_root, f"{sample_id}_result.json")
+            os.makedirs(os.path.dirname(result_file), exist_ok=True)
+            with open(result_file, 'w') as f:
+                json.dump(result, f, indent=4)
+            print(f"Results saved to {result_file}")
+        except Exception as e:
+            print(f"Error processing sample {sample_id}: {str(e)}") 
+            traceback.print_exc()
+        print(f"Sample {sample_id} processing complete.\n")
 
-            
-        # except Exception as e:
-        #     print(f"Error processing sample #{i+1}: {str(e)}")
-        #     traceback.print_exc()
-        #     with open(os.path.join(sample_dir, "error.log"), "w") as file:
-        #         file.write(f"Sample processing failed\nError: {str(e)}\n")
-        #         file.write(traceback.format_exc())
-    
 
 if __name__ == "__main__":
     main()

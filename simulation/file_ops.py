@@ -4,6 +4,7 @@ import csv
 import ctypes
 import numpy as np
 
+
 @ti.data_oriented
 class FileOperations:
     def __init__(self):
@@ -92,6 +93,8 @@ class FileOperations:
         agTaichiMPM: MPM simulator object
         output_dir: Output directory path
         """
+        os.makedirs(output_dir, exist_ok=True)
+
         self.py_save_count = agTaichiMPM.py_num_saved_frames
         
         # Create file paths
@@ -113,6 +116,10 @@ class FileOperations:
         
         # Generate particle data file
         self._generate_particle_dat_file(agTaichiMPM, saveStateFilePath)
+
+        # Prepare for skinning process
+        self.generate_obj_file(agTaichiMPM, outObjFilePath, saveStateFilePath, saveStateIntermediateFilePath, marching_cube_path)
+
         
         # Note: External skinning command remains commented out as in original
         # cmd = f'python3 "{particleSkinnerApp}" ...'
@@ -157,3 +164,19 @@ class FileOperations:
             # Write particle IDs (all set to 1)
             particle_ids = np.ones(valid_count, dtype=ctypes.c_int32)
             particle_ids.tofile(f)
+
+    def generate_obj_file(self, agTaichiMPM, outObjFilePath,saveStateFilePath, saveStateIntermediateFilePath, marching_cube_path):
+        """
+        Generate .obj file from particle data
+        Parameters:
+        agTaichiMPM: MPM simulator object
+        output_dir: Output directory path
+        """
+
+        # Generate the .obj file using the particle skinning process
+        particleSkinnerApp = 'ParticleSkinner3DTaichi/ParticleSkinner3DTaichi.py'
+
+        cmd = f'python3 "{particleSkinnerApp}"" {0.05} "{saveStateFilePath}" "{saveStateIntermediateFilePath}" "{outObjFilePath}" "{marching_cube_path}"'
+
+        print(f'[AGTaichiMPM] generating OBJ file: {outObjFilePath}')
+        os.system(cmd)  

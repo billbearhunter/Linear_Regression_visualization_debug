@@ -13,6 +13,8 @@
     yield_stress = "400.0"
   />    
 
+  
+
   <grid min="-1.0 -1.0 -10.0" max="30.0 8.0 14.0" cell_width="0.126"/>
   <!-- <grid min="-1.0 -1.0 -10.0" max="30.0 8.0 14.0" cell_width="0.3"/> -->
   <near_earth_gravity f="0.0 -981.0 0.0"/>

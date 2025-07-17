@@ -12,7 +12,7 @@ import time as tm
 import pandas as pd
 import subprocess
 
-ti.init(arch=ti.gpu)
+# ti.init(arch=ti.gpu)
 # ti.init(arch=ti.cuda)
 process = psutil.Process(os.getpid())
 

@@ -7,11 +7,11 @@ import ctypes
 import numpy as np
 from .xmlParser import MPMXMLData
 from .file_ops import FileOperations
-from config.config import MIN_ETA, MAX_ETA, MIN_N, MAX_N, MIN_SIGMA_Y, MAX_SIGMA_Y, MIN_WIDTH, MAX_WIDTH, MIN_HEIGHT, MAX_HEIGHT
+from config.config import MIN_ETA, MAX_ETA, MIN_N, MAX_N, MIN_SIGMA_Y, MAX_SIGMA_Y, MIN_WIDTH, MAX_WIDTH, MIN_HEIGHT, MAX_HEIGHT, DEFAULT_OUTPUT_DIR
 
 
+# # ti.init(arch=ti.cpu, offline_cache=True, default_fp=ti.f32, default_ip=ti.i32)
 # ti.init(arch=ti.gpu, offline_cache=True, default_fp=ti.f32, default_ip=ti.i32)
-# ti.init(arch=ti.cpu, offline_cache=True, default_fp=ti.f32, default_ip=ti.i32)
 gui = ti.GUI("AGTaichiMPM")
 
 @ti.data_oriented
@@ -41,7 +41,7 @@ class MPMSimulator:
         self.xml_data.staticBoxList[3].max[0] = width
         self.agtaichiMPM.changeSetUpData(self.xml_data)
         
-    def run_simulation(self, n, eta, sigma_y):
+    def run_simulation(self, n, eta, sigma_y,output_dir=DEFAULT_OUTPUT_DIR):
         """Run a single simulation and return displacement results"""
         # Validate parameters
         self._validate_params(n, eta, sigma_y)
@@ -57,7 +57,7 @@ class MPMSimulator:
         self.agtaichiMPM.py_num_saved_frames = 0
         
         # Execute simulation
-        return self._execute_simulation_loop()
+        return self._execute_simulation_loop(output_dir)
     
     def _validate_params(self, n, eta, sigma_y):
         """Validate parameter ranges"""
@@ -68,7 +68,7 @@ class MPMSimulator:
         if not (MIN_SIGMA_Y <= sigma_y <= MAX_SIGMA_Y):
             raise ValueError(f"sigma_y must be between {MIN_SIGMA_Y} and {MAX_SIGMA_Y}")
     
-    def _execute_simulation_loop(self):
+    def _execute_simulation_loop(self, output_dir):
         """Execute simulation main loop"""
         print('*** Parameters ***')
         print('  herschel_bulkley_power: ' + str(self.agtaichiMPM.ti_hb_n[None]))
@@ -100,7 +100,7 @@ class MPMSimulator:
                     #     x_diff = np.max(p_x[:, 0]) - x_0frame
                     #     x_diffs.append(x_diff)
 
-                    self.file_ops.saveFile(self.agtaichiMPM, self.xml_data.output_dir)
+                    self.file_ops.saveFile(self.agtaichiMPM, output_dir)
 
                     self.agtaichiMPM.compute_displacements()
 

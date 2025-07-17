@@ -16,4 +16,4 @@ MAX_HEIGHT = 7.0
 XML_TEMPLATE_PATH = "config/setting.xml"
 
 # Output configuration
-DEFAULT_OUTPUT_DIR = "/results"
+DEFAULT_OUTPUT_DIR = "results"
