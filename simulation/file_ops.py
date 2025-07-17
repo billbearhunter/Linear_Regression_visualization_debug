@@ -176,7 +176,7 @@ class FileOperations:
         # Generate the .obj file using the particle skinning process
         particleSkinnerApp = 'ParticleSkinner3DTaichi/ParticleSkinner3DTaichi.py'
 
-        cmd = f'python3 "{particleSkinnerApp}"" {0.05} "{saveStateFilePath}" "{saveStateIntermediateFilePath}" "{outObjFilePath}" "{marching_cube_path}"'
+        cmd = f'python3 "{particleSkinnerApp}" "{0.05}" "{saveStateFilePath}" "{saveStateIntermediateFilePath}" "{outObjFilePath}" "{marching_cube_path}"'
 
         print(f'[AGTaichiMPM] generating OBJ file: {outObjFilePath}')
         os.system(cmd)  
