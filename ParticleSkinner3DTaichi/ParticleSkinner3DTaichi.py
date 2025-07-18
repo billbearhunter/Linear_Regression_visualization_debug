@@ -19,6 +19,7 @@ real = ti.f32
 realnp = np.float32
 mem = 3
 ti.init(default_fp=real, arch=ti.cpu, device_memory_GB=mem)
+ti.init(default_fp=real, arch=ti.gpu, device_memory_GB=mem)
 LARGE_FLOAT = 1.0e10
 LARGE_FLOAT_THR = 1.0e9
 
@@ -269,8 +270,6 @@ class PartickeSkinner3DTaichi:
         f.write(b_res)
         f.write(b_phi)
         f.close()
-
-        subprocess.call([self.py_marching_cube_path, self.py_phi_fn, self.py_obj_fn])
 
 if len(sys.argv) < 6:
     print("usage: python ParticleSkinner3DTaichi.py <[input] h> <[input] mpm dat file> <[output] phi file> <[output] obj file> <marching cube path>")

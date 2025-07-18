@@ -177,6 +177,7 @@ class FileOperations:
         particleSkinnerApp = 'ParticleSkinner3DTaichi/ParticleSkinner3DTaichi.py'
 
         cmd = f'python3 "{particleSkinnerApp}" "{0.05}" "{saveStateFilePath}" "{saveStateIntermediateFilePath}" "{outObjFilePath}" "{marching_cube_path}"'
+        print(cmd)
 
         print(f'[AGTaichiMPM] generating OBJ file: {outObjFilePath}')
         os.system(cmd)  
