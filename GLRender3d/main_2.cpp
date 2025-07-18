@@ -297,7 +297,7 @@ void display(void)
 	
 	glEnable(GL_DEPTH_TEST);
 
-    drawFloor();
+    // drawFloor();
 
 	glDisable(GL_DEPTH_TEST);
 

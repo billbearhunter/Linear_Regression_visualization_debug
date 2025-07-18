@@ -271,6 +271,8 @@ class PartickeSkinner3DTaichi:
         f.write(b_phi)
         f.close()
 
+        subprocess.call([self.py_marching_cube_path, self.py_phi_fn, self.py_obj_fn])
+
 if len(sys.argv) < 6:
     print("usage: python ParticleSkinner3DTaichi.py <[input] h> <[input] mpm dat file> <[output] phi file> <[output] obj file> <marching cube path>")
     exit(-1)

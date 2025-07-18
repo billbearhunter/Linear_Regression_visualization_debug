@@ -199,7 +199,7 @@ void saveImage_cal( const unsigned int imageWidth, const unsigned int imageHeigh
 	glReadPixels(0,0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
 	fluidmat.fluid_mat_cal = cv::Mat(height, width, CV_8UC3, data);
 
-	cv::cvtColor(fluidmat.fluid_mat_cal, tempImage, cv::COLOR_BGRA2GRAY);
+	cv::cvtColor(fluidmat.fluid_mat_cal, tempImage, cv::COLOR_BGR2GRAY);
 	
 	cv::threshold(tempImage, tempImage2, 160, 255, cv::THRESH_BINARY); //閾値160で2値画像に変換
 	cv::flip(tempImage2, fluidmat.fluid_mat_cal, 0);
@@ -301,7 +301,7 @@ void display(void)
 
 	glEnable(GL_DEPTH_TEST);
 
-    drawFloor();
+    // drawFloor();
 
 	glDisable(GL_DEPTH_TEST);
 	
