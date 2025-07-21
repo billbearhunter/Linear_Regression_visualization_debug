@@ -284,7 +284,7 @@ void display(void)
 	glLoadIdentity();
 	gluPerspective(input_perspective, (double)g_UI.window_width / (double)g_UI.window_height, 0.1, 1000.0);
 	//gluLookAt(input_eyepos.x(), input_eyepos.y(), input_eyepos.z(), LA_Pos.x(), LA_Pos.y(), LA_Pos.z(), LU_Pos.x(), LU_Pos.y(), LU_Pos.z());
-	gluLookAt(0.0, -20.0 , 2.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0);
+	gluLookAt(0.0, 20.0 , 2.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0);
 
 	std::cout << "syslookAtpre" << std::endl;
 	std::cout << eyelookATpre << std::endl;

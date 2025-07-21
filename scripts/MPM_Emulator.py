@@ -7,9 +7,9 @@ class ObjRenderer:
                  base_path='results/run_20250718_133749', 
                  GL_render_path="GLRender3d/build/GLRender3d",
                  eyepos=np.array([0.0, 50.0, 0.0]),
-                 quat=np.array([-1.0, 0.0, 0.00, 0.000]),
+                 quat=np.array([1.0, 0.0, 0.00, 0.000]),
                  window_size=np.array([960, 540]),
-                 fov=36.17541):
+                 fov=50):
         """
         Simplified OBJ renderer: Renders all OBJ files to PNG
         
