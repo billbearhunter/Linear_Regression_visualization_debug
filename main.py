@@ -66,7 +66,7 @@ def main():
     
     # Generate parameter sets
     print("Generating parameter configurations...")
-    params_list = generate_random_parameters(2)
+    params_list = generate_random_parameters(1)
     
     csv_filename = os.path.join(results_root, "simulation_results.csv")
     os.makedirs(results_root, exist_ok=True)
@@ -132,10 +132,17 @@ def main():
             #     json.dump(result, f, indent=4)
             # print(f"Results saved to {result_file}")
 
+ 
+
         except Exception as e:
             print(f"Error processing sample {sample_id}: {str(e)}") 
             traceback.print_exc()
         print(f"Sample {sample_id} processing complete.\n")
+
+    # Render OBJ files using MPM_Emulator
+    print("Rendering OBJ files...")
+    renderer = MPM_Emulator.MPMEmulator()
+    renderer.render_all()  
 
 
 if __name__ == "__main__":
