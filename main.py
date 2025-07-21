@@ -66,7 +66,7 @@ def main():
     
     # Generate parameter sets
     print("Generating parameter configurations...")
-    params_list = generate_random_parameters(1)
+    params_list = generate_random_parameters(5)
     
     csv_filename = os.path.join(results_root, "simulation_results.csv")
     os.makedirs(results_root, exist_ok=True)
