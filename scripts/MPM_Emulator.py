@@ -4,7 +4,7 @@ import csv
 import glob
 import re
 
-class ObjRenderer:
+class MPMEmulator:
     def __init__(self, 
                  base_path='results', 
                  GL_render_path="GLRender3d/build/GLRender3d",
@@ -158,7 +158,7 @@ class ObjRenderer:
 
 if __name__ == '__main__':
     print("Starting OBJ rendering with config-specific displacement values...")
-    renderer = ObjRenderer()
+    renderer = MPMEmulator()
     print(f"Scanning directory: {renderer.base_path}")
     renderer.render_all()
     print("Rendering completed!")
