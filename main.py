@@ -1,5 +1,6 @@
 import os
 import json
+import csv
 import random
 import numpy as np
 import traceback
@@ -34,7 +35,7 @@ def load_prediction_model(model_path):
         raise e
 
 # 2. Generate random parameter sets
-def generate_random_parameters(num_samples=1):
+def generate_random_parameters(num_samples=2):
     """Generate random parameter samples within defined valid ranges"""
     params = []
     for _ in range(num_samples):
@@ -65,8 +66,14 @@ def main():
     
     # Generate parameter sets
     print("Generating parameter configurations...")
-    params_list = generate_random_parameters(1)
+    params_list = generate_random_parameters(2)
     
+    csv_filename = os.path.join(results_root, "simulation_results.csv")
+    os.makedirs(results_root, exist_ok=True)
+    with open(csv_filename, 'w') as f:
+        headers = ["n", "eta", "sigma_y", "width", "height"] + [f"x_{0}{i+1}" for i in range(8)]
+        f.write(",".join(headers) + "\n")
+
     # Track results
     all_results = {}
     print("Generated parameter sets:")
@@ -79,7 +86,8 @@ def main():
         print(f"Parameters: n={params['n']:.4f}, eta={params['eta']:.2f}, "
               f"σ_y={params['sigma_y']:.2f}, width={params['width']:.2f}, height={params['height']:.2f}")
         
-
+        sample_dir_path = os.path.join(results_root, f"{params['n']:.2f}_{params['eta']:.2f}_{params['sigma_y']:.2f}")
+        os.makedirs(sample_dir_path, exist_ok=True)
         
         # Save parameters and use model to predict flow distance
         try:
@@ -91,25 +99,39 @@ def main():
             displacements = simulator.run_simulation(n=params['n'],
                                                     eta=params['eta'],
                                                     sigma_y=params['sigma_y'],
-                                                    output_dir=results_root)
+                                                    output_dir= sample_dir_path)
             print(f"Simulation completed for sample {sample_id}. Displacements: {displacements}")
             # Predict flow distance using the model
             prediction = model.predict([[params['n'], params['eta'], params['sigma_y'], 
                                             params['width'], params['height']]])[0]
             print(f"Predicted flow distance: {prediction}")
+
             flow_distance = prediction.tolist()
-            # Save results
-            result = {
-                'params': params,
-                'predicted_flow_distance': flow_distance,
-                # 'simulation_data': simulator.get_simulation_data()  # Assuming this method exists
-            }
-            all_results[sample_id] = result
-            result_file = os.path.join(results_root, f"{sample_id}_result.json")
-            os.makedirs(os.path.dirname(result_file), exist_ok=True)
-            with open(result_file, 'w') as f:
-                json.dump(result, f, indent=4)
-            print(f"Results saved to {result_file}")
+            # Append results to CSV file
+            with open(csv_filename, 'a', newline='') as csvfile:
+                csv_writer = csv.writer(csvfile)
+                # Write data row
+                csv_writer.writerow([
+                    params['n'],
+                    params['eta'],
+                    params['sigma_y'],
+                    params['width'],
+                    params['height'],
+                    *[f"{d:.15f}" for d in flow_distance]
+                ])
+            
+            # # Save detailed results to JSON
+            # result = {
+            #     'params': params,
+            #     'predicted_flow_distance': prediction.tolist(),
+            #     'displacements': displacements,
+            # }
+            # all_results[sample_id] = result
+            # result_file = os.path.join(results_root, f"{sample_id}_result.json")
+            # with open(result_file, 'w') as f:
+            #     json.dump(result, f, indent=4)
+            # print(f"Results saved to {result_file}")
+
         except Exception as e:
             print(f"Error processing sample {sample_id}: {str(e)}") 
             traceback.print_exc()
