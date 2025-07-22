@@ -7,6 +7,7 @@ import traceback
 import taichi as ti
 import joblib as job
 from datetime import datetime
+from sklearn.preprocessing import StandardScaler
 from config.config import (
     MIN_ETA, MAX_ETA,
     MIN_N, MAX_N,
@@ -24,12 +25,14 @@ ti.init(arch=ti.gpu, offline_cache=True, default_fp=ti.f32, default_ip=ti.i32)
 sample_dir = "results/samples"
 
 # 1. Load pretrained prediction model
-def load_prediction_model(model_path):
+def load_prediction_model(model_path, y_scaler_path):
     """Load pretrained flow distance prediction model"""
     try:
         model = job.load(model_path)
+        y_scaler = job.load(y_scaler_path)
+        # feature_scaler = job.load(feature_scaler_path)
         print(f"Model loaded successfully from {model_path}")
-        return model
+        return model, y_scaler
     except Exception as e:
         print(f"Failed to load model from {model_path}: {str(e)}")
         raise e
@@ -62,8 +65,8 @@ def main():
     
     # # Load prediction model
     print("Loading prediction model...")
-    model = load_prediction_model("model/best_model.joblib")
-    
+    model, y_scaler = load_prediction_model("model/best_model.joblib", "model/target_scaler.joblib")
+
     # Generate parameter sets
     print("Generating parameter configurations...")
     params_list = generate_random_parameters(5)
@@ -103,10 +106,10 @@ def main():
             print(f"Simulation completed for sample {sample_id}. Displacements: {displacements}")
             # Predict flow distance using the model
             prediction = model.predict([[params['n'], params['eta'], params['sigma_y'], 
-                                            params['width'], params['height']]])[0]
-            print(f"Predicted flow distance: {prediction}")
-
-            flow_distance = prediction.tolist()
+                                           params['width'], params['height']]])[0]
+            prediction_scaled = y_scaler.inverse_transform(prediction.reshape(1, -1))
+            print(f"Predicted flow distance: {prediction_scaled[0]}")
+            flow_distance = prediction_scaled[0].tolist()
             # Append results to CSV file
             with open(csv_filename, 'a', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
@@ -117,7 +120,8 @@ def main():
                     params['sigma_y'],
                     params['width'],
                     params['height'],
-                    *[f"{d:.15f}" for d in flow_distance]
+                    # *[f"{d:.15f}" for d in flow_distance]
+                    *[displacements[i] if i < len(displacements) else 0 for i in range(8)]
                 ])
             
             # # Save detailed results to JSON
